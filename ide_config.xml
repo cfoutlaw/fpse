@@ -1,0 +1,156 @@
+<application>
+	<name>FrontPage Manager</name>
+	<author>Michael Wilson</author>
+	<version>2.0.2.3</version>
+	<email>mike.wilson@idminc.com</email>
+	<description><![CDATA[
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+	<title>FPSE</title>
+	<style>
+		body {
+			font-family: Arial,Helvetica,sans-serif;
+			font-size:75%;
+			color:#666666;
+		}
+		h1 {
+			font-size:150%;
+			font-weight:bolder;
+		}
+		p {
+			text-indent: 1.5em;
+		}
+	</style>
+</head>
+<body>
+	<h1>FrontPage Server Manager</h1>
+	<p>
+		<ul>
+			<li>Version 2.0.2 - Fix to correct errors on menu options when in a file.</li>
+			<li>Version 2.0.1 - Complete Delete Folder feature.</li>
+			<li>Version 2.0</li>
+			<ul>
+				<li>Change vti and backup storage to be in a database instead of files.</li>
+				<li>Added auto-update feature.</li>
+			</ul>
+		</ul>
+	</p>
+</body>
+</html>
+]]>
+	</description>	
+	<license><![CDATA[
+<pre>
+LICENSE 
+Copyright 2011 Michael Wilson
+
+Licensed under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in 
+compliance with the License. You may obtain a copy of the
+License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in 
+writing, software distributed under the License is 
+distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+CONDITIONS OF ANY KIND, either express or implied. See
+the License for the specific language governing
+permissions and limitations under the License.
+</pre>
+]]>
+	</license>
+
+	<install>
+		<wizard height="600" width="540"></wizard>
+	</install>
+
+	<events>
+		<event type="onprojectcreate" handlerid="CreateProject"></event>
+	</events>
+
+	<menucontributions>
+		<contribution target="projectview">
+			<menu name="FPSE Source Control">
+				<filters>
+					<filter type="project" />
+				</filters>
+				<action name="Reload Project" handlerid="ReloadProject" showResponse="true" />
+				<action name="Refresh" handlerid="Refresh" showResponse="true" />
+				<action name="Pending Checkins" handlerid="PendingCheckins" showResponse="true" />
+				<action name="Check In Files" handlerid="checkInFiles" showResponse="true" />
+				<action name="------------------------------" />
+				<action name="Get Latest Version - All files" handlerid="getLatestVerProject" showResponse="true" />
+				<action name="------------------------------" />
+				<action name="Check for updates" handlerid="checkForUpdates" showResponse="true" />
+			</menu>
+			<menu name="FPSE Source Control">
+				<filters>
+					<filter type="folder" />
+				</filters>
+				<action name="Refresh" handlerid="Refresh" showResponse="true" />
+				<action name="Get Latest Version" handlerid="GetLatestVersionFolder" showResponse="true" />
+				<action name="Check In" handlerid="CheckInFolder" showResponse="true" />
+				<action name="Check Out" handlerid="CheckOutFolder" showResponse="true" />
+				<action name="Add folder to server" handlerid="AddFolder" showResponse="true" />
+				<action name="------------------------------" />
+				<action name="Delete folder from server" handlerid="DeleteFolder" showResponse="true" />
+			</menu>
+			<menu name="FPSE Source Control">
+				<filters>
+					<filter type="file" />
+				</filters>
+				<action name="Get Latest Version" handlerid="GetLatestVersion" showResponse="true" />
+				<action name="Check Out" handlerid="CheckOut" showResponse="true" />
+				<action name="Upload" handlerid="Upload" showResponse="true" />
+				<action name="Check In" handlerid="CheckIn" showResponse="true" />
+				<action name="Add to server" handlerid="AddDoc" showResponse="true" />
+				<action name="------------------------------" />
+				<action name="Delete from server" handlerid="DeleteDoc" showResponse="true" />
+			</menu>
+		</contribution>
+		<contribution target="editor">
+			<menu name="FPSE Source Control">
+				<action name="Get Latest Version" handlerid="GetLatestVersion" showResponse="true" />
+				<action name="Check Out" handlerid="CheckOut" showResponse="true" />
+				<action name="Upload" handlerid="Upload" showResponse="true" />
+				<action name="Check In" handlerid="CheckIn" showResponse="true" />
+			</menu>
+		</contribution>
+	</menucontributions>
+
+	<viewcontributions>
+		<view id="fpseView" title="FPSE Source Control" handlerid="viewstart">
+			<toolbarcontributions> 
+				<toolbaritem icon="finAdjust.png" handlerid="viewstart" />
+			</toolbarcontributions>
+		</view>
+	</viewcontributions>
+
+	<!-- Define Handlers-->
+	<handlers>		
+		<handler id="ReloadProject" type="CFM" filename="NewProject.cfm" />
+		<handler id="viewstart" type="CFM" filename="viewstart.cfm" />
+		<handler id="CreateProject" type="CFM" filename="NewProject.cfm" />
+		<handler id="Refresh" type="CFM" filename="Refresh.cfm" />
+		<handler id="PendingCheckins" type="CFM" filename="PendingCheckins.cfm" />
+		<handler id="checkInFiles" type="CFM" filename="CheckInProject2.cfm" />
+		<handler id="getLatestVerProject" type="CFM" filename="GetLatestVersionProject.cfm" />
+		<handler id="GetLatestVersion" type="CFM" filename="GetLatestVersion.cfm" />
+		<handler id="CheckOut" type="CFM" filename="CheckOutDocument.cfm" />
+		<handler id="CheckIn" type="CFM" filename="CheckInDocument.cfm" />
+
+		<handler id="CheckOutFolder" type="CFM" filename="CheckOutFolder.cfm" />
+		<handler id="Upload" type="CFM" filename="PutDocument.cfm" />
+		<handler id="CheckInFolder" type="CFM" filename="CheckInFolder.cfm" />
+		<handler id="CheckInProject" type="CFM" filename="CheckInProjectDialog.cfm" />
+		<handler id="AutoUpload" type="CFM" filename="SetAutoUpload.cfm" />
+		<handler id="AddDoc" type="CFM" filename="AddDocument.cfm" />
+		<handler id="DeleteDoc" type="CFM" filename="DeleteDocument.cfm" />
+		<handler id="AddFolder" type="CFM" filename="AddFolder.cfm" />
+		<handler id="DeleteFolder" type="CFM" filename="DeleteFolder.cfm" />
+		<handler id="GetLatestVersionFolder" type="CFM" filename="GetLatestVersionFolder.cfm" />
+		<handler id="checkForUpdates" type="CFM" filename="CheckForUpdates.cfm" />
+	</handlers>
+</application>
