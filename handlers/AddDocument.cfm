@@ -2,7 +2,9 @@
 	fpServer.parseFilename(event.getFullFileName());
 	fpServer.addFile();
 	saveContent variable="viewData" {
-		writeOutput("<p>#event.getProjectName()#</p><p>Document added.</p>");
+		writeOutput("
+			<p>#event.getProjectName()#</p>
+			<p>#event.getFileName()# added.</p>");
 	}
 </cfscript>
 
