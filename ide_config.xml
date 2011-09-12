@@ -122,9 +122,6 @@ permissions and limitations under the License.
 
 	<viewcontributions>
 		<view id="fpseView" title="FPSE Source Control" handlerid="viewstart">
-			<toolbarcontributions> 
-				<toolbaritem icon="finAdjust.png" handlerid="viewstart" />
-			</toolbarcontributions>
 		</view>
 	</viewcontributions>
 

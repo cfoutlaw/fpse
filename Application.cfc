@@ -54,6 +54,8 @@ public void function onRequest(string targetPage)
 
 	fpServer = new com.core.FrontPage(event.getProjectName());
 
+	fpServer.setProjectDir(event.getProjectLocation());
+
 	include arguments.targetPage;
 }
 

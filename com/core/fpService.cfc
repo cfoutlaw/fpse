@@ -257,8 +257,8 @@ public struct function makeMethodCall()
 	fpService.setUseragent(getUserAgent());
 	fpService.setUrl("#getFrontPageURL()#/#getEntryPoint()#");
 	var result = fpService.send().getPrefix();
-//	SaveContent variable="resultText" {WriteOutput(result.filecontent);}
-//	WriteLog("#resultText#", "information", "yes", "fpExt.fp.response");
+	SaveContent variable="resultText" {WriteOutput(result.filecontent);}
+	WriteLog("#resultText#", "information", "yes", "fpExt.fp.response");
 
 	return result;
 }

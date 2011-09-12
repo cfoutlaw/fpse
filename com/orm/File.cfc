@@ -1,7 +1,6 @@
 ﻿component
 	persistent="true"
 	table="File"
-	schema="APP"
 	output="false"
 {
 	/* properties */

@@ -30,9 +30,6 @@
 			</command>
 		</commands>
 		<view id="fpseView" title="FrontPage">
-			<toolbarcontributions>
-				<toolbaritem icon="finAdjust.png" handlerid="viewstart" />
-			</toolbarcontributions>
 		</view>
 		<body>
 			<![CDATA[#viewData#]]>

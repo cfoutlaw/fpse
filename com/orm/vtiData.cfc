@@ -1,7 +1,6 @@
 ﻿component
 	persistent="true"
 	table="vtiData"
-	schema="APP"
 	output="false"
 {
 	/* properties */
