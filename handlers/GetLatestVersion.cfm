@@ -1,11 +1,12 @@
 ﻿<cfscript>
-	fpServer.parseFilename(event.getFullFileName());
-
 	fpServer.getLatestVersion();
-	currentFile = entityload("File", {projectID=fpServer.getProjectID(), filePath=fpServer.getCurrentFilePath()}, true);
 
 	saveContent variable="viewData" {
-		writeOutput("<p>#event.getProjectName()#:<br /><b>#event.getFileName()#</b><br />has been updated to the latest server version.</p>");
+		writeOutput("
+			<p>#event.getProjectName()#:
+			<br /><b>#event.getFileName()#</b>
+			<br />has been updated to the latest server version.</p>
+		");
 	}
 </cfscript>
 
@@ -17,11 +18,6 @@
 			<command type="refreshFile">
 				<params>
 					<param key="filename" value="#fpServer.getCurrentFilePath()#" />
-				</params>
-			</command>
-			<command type="refreshProject">
-				<params>
-					<param key="projectname" value="#event.getProjectName()#" />
 				</params>
 			</command>
 		</commands>

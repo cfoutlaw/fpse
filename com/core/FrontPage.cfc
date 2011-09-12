@@ -17,7 +17,7 @@ property string filename;
 property string vtiDataValid;
 property numeric projectID;
 property name="fileSubdir" getter="false";
-property name="fpService" getter="false" setter="false";
+property name="fpService";
 property vti;
 
 /**
@@ -32,7 +32,7 @@ public FrontPage function init(required string projectName)
 	setProjectName(arguments.projectName);
 	loadProjectDetails();
 	variables.fpService = new com.core.fpService(getUsername(), getPassword());
-	variables.fpservice.setFrontPageURL(getProjectURL());
+	getFpService().setFrontPageURL(getProjectURL());
 	return this;
 }
 public void function loadProjectDetails()
@@ -64,7 +64,7 @@ public void function saveProjectDetails()
 	//ormFlush();
 	setProjectID(project.getProjectID());
 	variables.fpService = new com.core.fpService(getUsername(), getPassword());
-	variables.fpservice.setFrontPageURL(getProjectURL());
+	getFpService().setFrontPageURL(getProjectURL());
 }
 /**
   * Loads files and directories form FrontPage and creates any missing items in local directory.
@@ -73,12 +73,12 @@ public void function saveProjectDetails()
 public any function refreshDirectory(required string directory)
 	output="false"
 {
-	variables.fpService.createListDocMethod(arguments.directory);
+	getFpService().createListDocMethod(arguments.directory);
 	writeLog("#getProjectName()# - Getting directory list...", "Information", "yes", "fpExt.detail");
-	var fpResult = variables.fpService.makeMethodCall();
+	var fpResult = getFpService().makeMethodCall();
 	writeLog("#getProjectName()# - Updating local file system...", "Information", "yes", "fpExt.detail");
-	var dirList = variables.fpService.CreateDirListArray(variables.fpService.DecodeMetaInfo(fpResult.filecontent));
-	var fileList = variables.fpService.CreateDocListArray(variables.fpService.DecodeMetaInfo(fpResult.filecontent));
+	var dirList = getFpService().CreateDirListArray(getFpService().DecodeMetaInfo(fpResult.filecontent));
+	var fileList = getFpService().CreateDocListArray(getFpService().DecodeMetaInfo(fpResult.filecontent));
 	var dir = "";
 	var i = 0;
 
@@ -184,12 +184,12 @@ public void function getLatestVersion(noLog=false)
 	displayname="Get Latest Version"
 	output="false"
 {
-	variables.fpService.createGetDocMethod(getFileSubDir() & getFilename());
-	var fpResult = variables.fpService.makeMethodCall();
+	getFpService().createGetDocMethod(getFileSubDir() & getFilename());
+	var fpResult = getFpService().makeMethodCall();
 
 	try {
-		var vtiData = variables.fpService.parseMetaInfo(variables.fpService.getDocument(variables.fpService.decodeMetaInfo(fpResult.filecontent)));
-		var fileContent = removeBOM(variables.fpService.getDocumentContent(fpResult.filecontent));
+		var vtiData = getFpService().parseMetaInfo(getFpService().getDocument(getFpService().decodeMetaInfo(fpResult.filecontent)));
+		var fileContent = removeBOM(getFpService().getDocumentContent(fpResult.filecontent));
 	}
 	catch (any e) {
 		return;
@@ -258,9 +258,9 @@ public void function checkOut()
 	displayname="Check Out"
 	output="false"
 {
-	variables.fpService.createGetDocMethod(getFileSubDir() & getFilename());
-	var fpResult = variables.fpService.makeMethodCall();
-	var vtiData = variables.fpService.parseMetaInfo(variables.fpService.getDocument(variables.fpService.decodeMetaInfo(fpResult.filecontent)));
+	getFpService().createGetDocMethod(getFileSubDir() & getFilename());
+	var fpResult = getFpService().makeMethodCall();
+	var vtiData = getFpService().parseMetaInfo(getFpService().getDocument(getFpService().decodeMetaInfo(fpResult.filecontent)));
 
 	var currentFile = entityload("File", {projectID=getProjectID(), filePath=getCurrentFilePath()}, true);
 
@@ -271,10 +271,10 @@ public void function checkOut()
 		return;
 	}
 
-	variables.fpService.createGetDocMethod(getFileSubDir() & getFilename(), true);
-	fpResult = variables.fpService.makeMethodCall();
-	vtiData = variables.fpService.parseMetaInfo(variables.fpService.getDocument(variables.fpService.decodeMetaInfo(fpResult.filecontent)));
-	var fileContent = removeBOM(variables.fpService.getDocumentContent(fpResult.filecontent));
+	getFpService().createGetDocMethod(getFileSubDir() & getFilename(), true);
+	fpResult = getFpService().makeMethodCall();
+	vtiData = getFpService().parseMetaInfo(getFpService().getDocument(getFpService().decodeMetaInfo(fpResult.filecontent)));
+	var fileContent = removeBOM(getFpService().getDocumentContent(fpResult.filecontent));
 
 	saveVtiData(vtiData, currentFile.getFileID());
 	setVti(vtiData);
@@ -289,9 +289,9 @@ public void function addFile()
 {
 	var fileContents = fileRead("#GetCurrentFilePath()#");
 	// todo: save archive of file contnents.
-	variables.fpService.createAddDocMethod(getFileSubDir() & getFilename(), fileContents);
-	var fpResult = variables.fpService.makeMethodCall();
-	var vtiData = variables.fpService.parseMetaInfo(variables.fpService.getDocument(variables.fpService.decodeMetaInfo(fpResult.filecontent)));
+	getFpService().createAddDocMethod(getFileSubDir() & getFilename(), fileContents);
+	var fpResult = getFpService().makeMethodCall();
+	var vtiData = getFpService().parseMetaInfo(getFpService().getDocument(getFpService().decodeMetaInfo(fpResult.filecontent)));
 
 	var currentFile = entityNew("File");
 	currentFile.setProjectID(getProjectID());
@@ -307,8 +307,8 @@ public void function addFolder(required string directory)
 	displayname="Add Folder"
 	output="false"
 {
-	variables.fpService.createAddFolderMethod(arguments.directory);
-	var fpResult = variables.fpService.makeMethodCall();
+	getFpService().createAddFolderMethod(arguments.directory);
+	var fpResult = getFpService().makeMethodCall();
 }
 public void function CheckIn()
 	displayname="Check In"
@@ -316,9 +316,9 @@ public void function CheckIn()
 {
 	putFile(true);
 
-	variables.fpService.createUncheckoutMethod(getFileSubDir() & getFilename());
-	var fpResult = variables.fpService.makeMethodCall();
-	var vtiData = variables.fpService.parseMetaInfo(variables.fpService.getMetaInfo(variables.fpService.decodeMetaInfo(fpResult.filecontent)));
+	getFpService().createUncheckoutMethod(getFileSubDir() & getFilename());
+	var fpResult = getFpService().makeMethodCall();
+	var vtiData = getFpService().parseMetaInfo(getFpService().getMetaInfo(getFpService().decodeMetaInfo(fpResult.filecontent)));
 
 	var currentFile = entityload("File", {projectID=getProjectID(), filePath=getCurrentFilePath()}, true);
 
@@ -345,9 +345,9 @@ public void function putFile(boolean isCheckIn="false")
 	currentFile.setContent(fileContents);
 	entitySave(currentFile);
 
-	variables.fpService.createPutDocMethod(getFileSubDir() & getFilename(), getTimeLastModified(currentFile.getFileID()), fileContents);
-	var fpResult = variables.fpService.makeMethodCall();
-	var vtiData = variables.fpService.parseMetaInfo(variables.fpService.getDocument(variables.fpService.decodeMetaInfo(fpResult.filecontent)));
+	getFpService().createPutDocMethod(getFileSubDir() & getFilename(), getTimeLastModified(currentFile.getFileID()), fileContents);
+	var fpResult = getFpService().makeMethodCall();
+	var vtiData = getFpService().parseMetaInfo(getFpService().getDocument(getFpService().decodeMetaInfo(fpResult.filecontent)));
 
 	setVti(vtiData);
 
